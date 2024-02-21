@@ -2,8 +2,12 @@
 
 Ground::Ground()
 {
+    VBO = 0;
+    VAO = 0;
+    EBO = 0;
+
     // Vertices of the floor
-    GLfloat floorVertices[] = {
+    GLfloat groundVertices[] = {
         // Positions           // Colors
         -10.0f, -0.5f, -10.0f,    0.5f, 0.5f, 0.5f,
         10.0f, -0.5f, -10.0f,     0.5f, 0.5f, 0.5f,
@@ -13,7 +17,7 @@ Ground::Ground()
         -10.0f, -0.5f, -10.0f,    0.5f, 0.5f, 0.5f
     };
 
-    GLuint floorIndices[] = {
+    GLuint groundIndices[] = {
     0, 1, 2,
     2, 3, 0
     };
@@ -25,10 +29,10 @@ Ground::Ground()
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(floorVertices), floorVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(groundVertices), groundVertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(floorIndices), floorIndices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(groundIndices), groundIndices, GL_STATIC_DRAW);
 
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);

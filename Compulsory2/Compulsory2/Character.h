@@ -13,7 +13,9 @@ public:
     void DrawCharacter();
 
 private:
-    GLuint VAO, VBO;
+    GLuint VAO;
+    GLuint VBO;
+    GLuint EBO;
 };
 
 #endif

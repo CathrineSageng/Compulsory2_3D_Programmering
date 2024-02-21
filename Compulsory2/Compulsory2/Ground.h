@@ -13,7 +13,8 @@ public:
 	void DrawGround();
 
 private:
-	GLuint VAO, VBO, EBO;
-
+	GLuint VAO;
+	GLuint VBO;
+	GLuint EBO;
 };
 #endif
