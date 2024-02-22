@@ -15,6 +15,7 @@ using namespace std;
 const GLuint WIDTH = 1000, HEIGHT = 1000;
 const GLfloat cameraSpeed = 0.001f;
 glm::vec3 cubePosition = glm::vec3(0.0f, 0.5f, 0.0f); // Initial position of the cube
+const float groundSize = 10.0f; // Half of the ground's size in each direction
 
 
 
@@ -140,15 +141,25 @@ int main()
         if (keys[GLFW_KEY_RIGHT])
             cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 
+        glm::vec3 newPosition = cubePosition;
         // Handle keyboard input for character movement
         if (keys[GLFW_KEY_W])
-            cubePosition += cameraSpeed * cameraFront;
+            newPosition += cameraSpeed * cameraFront;
         if (keys[GLFW_KEY_A])
-            cubePosition -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+            newPosition -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
         if (keys[GLFW_KEY_S])
-            cubePosition -= cameraSpeed * cameraFront;
+            newPosition -= cameraSpeed * cameraFront;
         if (keys[GLFW_KEY_D])
-            cubePosition += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+            newPosition += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+        // Check boundaries
+        if (newPosition.x < -groundSize) newPosition.x = -groundSize;
+        if (newPosition.x > groundSize) newPosition.x = groundSize;
+        if (newPosition.z < -groundSize) newPosition.z = -groundSize;
+        if (newPosition.z > groundSize) newPosition.z = groundSize;
+
+        // Update character position
+        cubePosition = newPosition;
 
         // Update model matrix for character
         glm::mat4 modelCharacter;
