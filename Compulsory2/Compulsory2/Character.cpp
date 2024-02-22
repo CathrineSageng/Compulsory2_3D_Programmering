@@ -11,7 +11,7 @@ Character::Character()
 
     // Define vertices of the cube
     GLfloat vertices[] = {
-        // Positions
+        // Positions                //Colors
     -0.25f, -0.5f, -0.25f,        1.0f, 0.5f, 0.5f,     //Orange
     0.25f, -0.5f, -0.25f,         1.0f, 0.5f, 0.5f,
     0.25f, 0.5f, -0.25f,          1.0f, 0.5f, 0.5f,

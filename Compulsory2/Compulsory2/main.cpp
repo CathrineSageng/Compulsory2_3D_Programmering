@@ -10,9 +10,12 @@
 #include"Character.h"
 #include "Ground.h"
 
+using namespace std;
+
 const GLuint WIDTH = 1000, HEIGHT = 1000;
 const GLfloat cameraSpeed = 0.001f;
 glm::vec3 cubePosition = glm::vec3(0.0f, 0.5f, 0.0f); // Initial position of the cube
+
 
 
 // Camera settings
@@ -27,38 +30,39 @@ bool firstMouse = true;
 bool keys[1024];
 
 // Mouse movement callback function
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    GLfloat xoffset = xpos - lastX;
-    GLfloat yoffset = lastY - ypos;
-    lastX = xpos;
-    lastY = ypos;
-
-    GLfloat sensitivity = 0.05f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    yaw += xoffset;
-    pitch += yoffset;
-
-    if (pitch > 89.0f) pitch = 89.0f;
-    if (pitch < -89.0f) pitch = -89.0f;
-
-    glm::vec3 front;
-    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front.y = sin(glm::radians(pitch));
-    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(front);
-}
+//void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+//    if (firstMouse)
+//    {
+//        lastX = xpos;
+//        lastY = ypos;
+//        firstMouse = false;
+//    }
+//
+//    GLfloat xoffset = xpos - lastX;
+//    GLfloat yoffset = lastY - ypos;
+//    lastX = xpos;
+//    lastY = ypos;
+//
+//    GLfloat sensitivity = 0.05f;
+//    xoffset *= sensitivity;
+//    yoffset *= sensitivity;
+//
+//    yaw += xoffset;
+//    pitch += yoffset;
+//
+//    if (pitch > 89.0f) pitch = 89.0f;
+//    if (pitch < -89.0f) pitch = -89.0f;
+//
+//    glm::vec3 front;
+//    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+//    front.y = sin(glm::radians(pitch));
+//    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+//    cameraFront = glm::normalize(front);
+//}
 
 // Keyboard input callback function
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) 
+{
     GLfloat cameraSpeed = 0.05f;
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
@@ -68,9 +72,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         else if (action == GLFW_RELEASE)
             keys[key] = false;
     }
+
+    // Character movement
+    if (action == GLFW_PRESS) 
+    {
+        if (key == GLFW_KEY_W)
+            cubePosition += cameraSpeed * cameraFront;
+        else if (key == GLFW_KEY_S)
+            cubePosition -= cameraSpeed * cameraFront;
+        else if (key == GLFW_KEY_A)
+            cubePosition -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        else if (key == GLFW_KEY_D)
+            cubePosition += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    }
 }
 
-int main() {
+int main() 
+{
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -81,11 +99,12 @@ int main() {
     glfwMakeContextCurrent(window);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window, mouse_callback);
+   /* glfwSetCursorPosCallback(window, mouse_callback);*/
     glfwSetKeyCallback(window, key_callback);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) 
+    {
+        cout << "Failed to initialize GLAD" << endl;
         return -1;
     }
 
@@ -121,9 +140,25 @@ int main() {
         if (keys[GLFW_KEY_RIGHT])
             cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 
+        // Handle keyboard input for character movement
+        if (keys[GLFW_KEY_W])
+            cubePosition += cameraSpeed * cameraFront;
+        if (keys[GLFW_KEY_A])
+            cubePosition -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        if (keys[GLFW_KEY_S])
+            cubePosition -= cameraSpeed * cameraFront;
+        if (keys[GLFW_KEY_D])
+            cubePosition += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+        // Update model matrix for character
+        glm::mat4 modelCharacter;
+        modelCharacter = glm::translate(glm::mat4(1.0f), cubePosition);
+
+        // Update model matrix for ground, so the ground is not moving
+        glm::mat4 modelGround = glm::mat4(1.0f);
 
         // Clear the color and depth buffers
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.196078f, 0.196078f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Use shader program
@@ -139,8 +174,14 @@ int main() {
         GLint projLoc = glGetUniformLocation(shaderProgram.ID, "projection");
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), cubePosition);
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelCharacter));
 
         character1.DrawCharacter();
+
+        // Pass transformation matrices to shader for ground
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelGround));
+
         ground1.DrawGround();
 
         // Swap the screen buffers

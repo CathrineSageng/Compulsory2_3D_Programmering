@@ -8,13 +8,13 @@ Ground::Ground()
 
     // Vertices of the floor
     GLfloat groundVertices[] = {
-        // Positions           // Colors
-        -10.0f, -0.5f, -10.0f,    0.5f, 0.5f, 0.5f,
-        10.0f, -0.5f, -10.0f,     0.5f, 0.5f, 0.5f,
-        10.0f, -0.5f, 10.0f,      0.5f, 0.5f, 0.5f,
-        10.0f, -0.5f, 10.0f,      0.5f, 0.5f, 0.5f,
-        -10.0f, -0.5f, 10.0f,     0.5f, 0.5f, 0.5f,
-        -10.0f, -0.5f, -10.0f,    0.5f, 0.5f, 0.5f
+        // Positions                // Colors
+        -10.0f, -0.1f, -10.0f,    0.0f, 0.5f, 0.0f,
+        10.0f, -0.1f, -10.0f,     0.0f, 0.5f, 0.0f,
+        10.0f, -0.1f, 10.0f,      0.0f, 0.5f, 0.0f,
+        10.0f, -0.1f, 10.0f,      0.0f, 0.5f, 0.0f,
+        -10.0f, -0.1f, 10.0f,     0.0f, 0.5f, 0.0f,
+        -10.0f, -0.1f, -10.0f,    0.0f, 0.5f, 0.0f
     };
 
     GLuint groundIndices[] = {
