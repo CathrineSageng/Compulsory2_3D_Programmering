@@ -139,6 +139,7 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShaderClass.cpp" />
+    <ClCompile Include="Trophies.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
@@ -431,6 +432,7 @@
     <ClInclude Include="dependencies\include\stb\stb_image.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="ShaderClass.h" />
+    <ClInclude Include="Trophies.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="default.frag" />
