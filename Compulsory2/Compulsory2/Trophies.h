@@ -13,6 +13,7 @@ public:
     ~Trophies();
     void SetPoints(const vector<glm::vec3>& newPoints);
     void DrawTrophies();
+    void RemoveTrophy(const glm::vec3& position);
 
 private:
     GLuint VAO;
@@ -20,6 +21,7 @@ private:
     GLuint CBO;
     vector<glm::vec3> points;
     vector<glm::vec3> farger;
+    std::vector<bool> activeTrophies; // Keep track of active trophies
 };
 
 #endif

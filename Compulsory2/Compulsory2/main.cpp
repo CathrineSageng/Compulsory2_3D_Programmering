@@ -27,6 +27,22 @@ vector<glm::vec3> points =
     glm::vec3(4, 0.1, 5), glm::vec3(6, 0.1, 5), glm::vec3(6, 0.1, 7), glm::vec3(8, 0.1, 4)
 };
 
+// Define bounding sphere for character
+glm::vec3 characterCenter = cubePosition;
+float characterRadius = 0.5f; // Adjust as needed
+
+// Calculate distance between two points
+float distance(glm::vec3 p1, glm::vec3 p2) {
+    return glm::length(p1 - p2);
+}
+
+// Check collision between character and trophy
+bool checkCollision(glm::vec3 trophyCenter, float trophyRadius)
+{
+    float dist = distance(characterCenter, trophyCenter);
+    return dist <= (characterRadius + trophyRadius);
+}
+
 vector<glm::vec3> punkter = { glm::vec3(-1, 0, -1), glm::vec3(-2, 0, -8), glm::vec3(-6, 0, -3), glm::vec3(-8, 0, -1) };
 
 // Global variables to control NPC movement
@@ -200,6 +216,15 @@ int main()
 
     NPC NPC;
 
+    const float trophyRadius = 0.5f; // Adjust the value as needed
+
+    // Define bounding spheres for trophies (assuming the trophy positions are stored in the `points` vector)
+    std::vector<std::pair<glm::vec3, float>> trophyBoundingSpheres;
+    for (const auto& trophy : points)
+    {
+        trophyBoundingSpheres.push_back({ trophy, trophyRadius }); // Assuming trophyRadius is defined elsewhere
+    }
+
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
    
@@ -290,6 +315,17 @@ int main()
         updateNPCPosition(shaderProgram, deltaTime, graph, npcTime, npcForward);
 
         NPC.DrawNPC();
+
+        characterCenter = cubePosition;
+
+        // Collision detection between character and trophies
+        for (const auto& trophySphere : trophyBoundingSpheres) {
+            glm::vec3 trophyCenter = trophySphere.first;
+            float trophyRadius = trophySphere.second;
+            if (checkCollision(trophyCenter, trophyRadius)) {
+                trophies1.RemoveTrophy(trophyCenter);
+            }
+        }
 
         // Swap the screen buffers
         glfwSwapBuffers(window);

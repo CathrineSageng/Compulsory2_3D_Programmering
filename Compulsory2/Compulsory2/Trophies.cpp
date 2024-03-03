@@ -26,9 +26,11 @@ Trophies::~Trophies()
     glDeleteVertexArrays(1, &VAO);
 }
 
-void Trophies::SetPoints(const vector<glm::vec3>& newPoints)
+void Trophies::SetPoints(const vector<glm::vec3>& points)
 {
-    points = newPoints;
+    this->points = points;
+    // Initialize all trophies as active
+    activeTrophies = std::vector<bool>(points.size(), true);
 
     farger.resize(points.size(), glm::vec3(1.0f, 0.8f, 0.9f));
     //Colors the points 
@@ -44,7 +46,25 @@ void Trophies::SetPoints(const vector<glm::vec3>& newPoints)
 void Trophies::DrawTrophies()
 {
     glBindVertexArray(VAO);
-    glPointSize(40.0f);
-    glDrawArrays(GL_POINTS, 0, points.size());
+    for (size_t i = 0; i < points.size(); ++i) {
+        if (activeTrophies[i]) {
+            // Draw the trophy at points[i]
+            // Implement your drawing logic here
+            glPointSize(40.0f);
+            glDrawArrays(GL_POINTS, i, 1);
+        }
+    }
     glBindVertexArray(0);
+}
+
+void Trophies::RemoveTrophy(const glm::vec3& position)
+{
+    // Find the index of the trophy with the specified position
+    auto it = std::find(points.begin(), points.end(), position);
+    if (it != points.end()) {
+        // Calculate the index of the trophy
+        size_t index = std::distance(points.begin(), it);
+        // Deactivate the trophy
+        activeTrophies[index] = false;
+    }
 }
