@@ -10,10 +10,12 @@
 #include"Character.h"
 #include "Ground.h"
 #include "Trophies.h"
+#include "NPC.h"
+#include "GraphNPC.h"
 
 using namespace std;
 
-const GLuint WIDTH = 1000, HEIGHT = 1000;
+const GLuint WIDTH = 1200, HEIGHT = 1000;
 const GLfloat cameraSpeed = 0.001f;
 glm::vec3 cubePosition = glm::vec3(0.0f, 0.5f, 0.0f); // Initial position of the cube
 const float groundSize = 10.0f; // Half of the ground's size in each direction
@@ -24,6 +26,49 @@ vector<glm::vec3> points =
     glm::vec3(1, 0.1,  2), glm::vec3(3, 0.1, 1), glm::vec3(2, 0.1, 4), glm::vec3(5, 0.1, 3),
     glm::vec3(4, 0.1, 5), glm::vec3(6, 0.1, 5), glm::vec3(6, 0.1, 7), glm::vec3(8, 0.1, 4)
 };
+
+vector<glm::vec3> punkter = { glm::vec3(-1, 0, -1), glm::vec3(-2, 0, -8), glm::vec3(-6, 0, -3), glm::vec3(-8, 0, -1) };
+
+// Global variables to control NPC movement
+float npcSpeed = 0.1f; // Adjust speed as needed
+float npcTime = 0.0f; // Timer for NPC movement
+bool npcForward = true; // Flag to indicate the direction of NPC movement
+
+void updateNPCPosition(const Shader& shaderProgram, GLfloat deltaTime, Graph& graph, float& npcTime, bool& npcForward) {
+    // Update NPC time and direction
+    if (npcForward) {
+        npcTime += npcSpeed * deltaTime;
+        if (npcTime >= 1.0f) {
+            npcTime = 1.0f;
+            npcForward = false; // Reverse direction when reaching the end
+        }
+    }
+    else {
+        npcTime -= npcSpeed * deltaTime;
+        if (npcTime <= 0.0f) {
+            npcTime = 0.0f;
+            npcForward = true; // Reverse direction when reaching the start
+        }
+    }
+
+    // Calculate NPC position along the graph based on time
+    int numPoints = graph.getNumPoints();
+    float numPointsFloat = static_cast<float>(numPoints);
+    float indexFloat = npcTime * numPointsFloat;
+    int currentIndex = static_cast<int>(indexFloat);
+
+    // Ensure currentIndex stays within valid range
+    currentIndex = glm::clamp(currentIndex, 0, numPoints - 1);
+
+    glm::vec3 npcPosition = graph.getGraphPoint(currentIndex);
+
+    // Update model matrix for NPC
+    glm::mat4 modelNPC = glm::translate(glm::mat4(1.0f), npcPosition);
+
+    // Pass model matrix to shader
+    GLint modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelNPC));
+}
 
 // Camera settings
 float angle = glm::radians(20.0f); // Convert 20 degrees to radians
@@ -107,6 +152,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         else if (key == GLFW_KEY_D)
             cubePosition += glm::normalize(glm::cross(movementDirection, cameraUp)) * cameraSpeed;
     }
+
+    // Handle 'm' key for toggling movement direction of modelNPC
+    if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+        npcForward = !npcForward; // Toggle the movement direction
+    }
 }
 
 int main() 
@@ -144,6 +194,11 @@ int main()
     //Creates trophies objects
     Trophies trophies1;
     trophies1.SetPoints(points);
+
+    Graph graph;
+    graph.generateGraph();
+
+    NPC NPC;
 
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -230,6 +285,11 @@ int main()
         ground1.DrawGround();
 
         trophies1.DrawTrophies();
+
+        graph.renderScene();
+        updateNPCPosition(shaderProgram, deltaTime, graph, npcTime, npcForward);
+
+        NPC.DrawNPC();
 
         // Swap the screen buffers
         glfwSwapBuffers(window);
