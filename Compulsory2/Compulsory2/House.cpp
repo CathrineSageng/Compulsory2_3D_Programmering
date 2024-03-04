@@ -4,70 +4,65 @@ House::House()
 {
     VBO = 0;
     VAO = 0;
-    EBO = 0;
 
     GLfloat vertices[] = {
         // Positions                //Colors
-    -2.00f, -0.1f, -2.00f,        1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, -2.00f,         1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, -2.00f,          1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, -2.00f,          1.0f, 0.0f, 0.0f,
-    -2.00f, 3.0f, -2.00f,         1.0f, 0.0f, 0.0f,
-    -2.00f, -0.1f, -2.00f,        1.0f, 0.0f, 0.0f,
+        //Front
+        -2.00f, 0.0f, -2.00f,        1.0f, 1.0f, 1.0f,
+        2.00f, 0.0f, -2.00f,         1.0f, 1.0f, 1.0f,
+        2.00f, 3.0f, -2.00f,         1.0f, 1.0f, 1.0f,
+        2.00f, 3.0f, -2.00f,         1.0f, 1.0f, 1.0f,
+        -2.00f, 3.0f, -2.00f,        1.0f, 1.0f, 1.0f,
+        -2.00f, 0.0f, -2.00f,        1.0f, 1.0f, 1.0f,
 
-    -2.00f, -0.0f, 2.0f,         1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, 2.00f,          1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, 2.00f,           1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, 2.00f,           1.0f, 0.0f, 0.0f,
-    -2.00f, 3.0f, 2.00f,          1.0f, 0.0f, 0.0f,
-    -2.00f, -0.1f, 2.00f,         1.0f, 0.0f, 0.0f,
+        //Back
+        -2.00f, 0.0f, 2.0f,         1.0f, 1.0f, 1.0f,
+        2.00f, 0.0f, 2.00f,         1.0f, 1.0f, 1.0f,
+        2.00f, 3.0f, 2.00f,         1.0f, 1.0f, 1.0f,
+        2.00f, 3.0f, 2.00f,         1.0f, 1.0f, 1.0f,
+        -2.00f, 3.0f, 2.00f,        1.0f, 1.0f, 1.0f,
+        -2.00f, 0.0f, 2.00f,        1.0f, 1.0f, 1.0f,
 
-    -2.00f, 3.0f, 2.00f,          1.0f, 0.0f, 0.0f,
-    -2.00f, 3.0f, -2.00f,         1.0f, 0.0f, 0.0f,
-    -2.00f, -0.1f, -2.00f,        1.0f, 0.0f, 0.0f,
-    -2.00f, -0.1f, -2.00f,        1.0f, 0.0f, 0.0f,
-    -2.00f, -0.1f, 2.00f,         1.0f, 0.0f, 0.0f,
-    -2.00f, 3.0f, 2.00f,          1.0f, 0.0f, 0.0f,
+        //Left side
+        -2.00f, 3.0f, 2.00f,          1.0f, 1.0f, 1.0f,
+        -2.00f, 3.0f, -2.00f,         1.0f, 1.0f, 1.0f,
+        -2.00f, 0.0f, -2.00f,        1.0f, 1.0f, 1.0f,
+        -2.00f, 0.0f, -2.00f,        1.0f, 1.0f, 1.0f,
+        -2.00f, 0.0f, 2.00f,         1.0f, 1.0f, 1.0f,
+        -2.00f, 3.0f, 2.00f,          1.0f, 1.0f, 1.0f,
 
-    2.00f, 3.0f, 2.00f,           1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, -2.00f,          1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, -2.00f,         1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, -2.00f,         1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, 2.00f,          1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, 2.00f,           1.0f, 0.0f, 0.0f,
+        //Right side
+        2.00f, 3.0f, 2.00f,           1.0f, 1.0f, 1.0f,
+        2.00f, 3.0f, -2.00f,          1.0f, 1.0f, 1.0f,
+        2.00f, 0.0f, -2.00f,          1.0f, 1.0f, 1.0f,
+        2.00f, 0.0f, -2.00f,          1.0f, 1.0f, 1.0f,
+        2.00f, 0.0f, 2.00f,           1.0f, 1.0f, 1.0f,
+        2.00f, 3.0f, 2.00f,           1.0f, 1.0f, 1.0f,
 
-    -2.00f, -0.1f, -2.00f,        1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, -2.00f,         1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, 2.00f,          1.0f, 0.0f, 0.0f,
-    2.00f, -0.1f, 2.00f,          1.0f, 0.0f, 0.0f,
-    -2.00f, -0.1f, 2.00f,         1.0f, 0.0f, 0.0f,
-    -2.00f, -0.1f, -2.00f,        1.0f, 0.0f, 0.0f,
+        //Bottom side
+        -2.00f, 0.0f, -2.00f,        0.647059f, 0.164706f, 0.164706f,
+        2.00f, 0.0f, -2.00f,         0.647059f, 0.164706f, 0.164706f,
+        2.00f, 0.0f, 2.00f,          0.647059f, 0.164706f, 0.164706f,
+        2.00f, 0.0f, 2.00f,          0.647059f, 0.164706f, 0.164706f,
+        -2.00f, 0.0f, 2.00f,         0.647059f, 0.164706f, 0.164706f,
+        -2.00f, 0.0f, -2.00f,        0.647059f, 0.164706f, 0.164706f,
 
-    -2.00f, 3.0f, -2.00f,         1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, -2.00f,          1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, 2.00f,           1.0f, 0.0f, 0.0f,
-    2.00f, 3.0f, 2.00f,           1.0f, 0.0f, 0.0f,
-    -2.00f, 3.0f, 2.00f,          1.0f, 0.0f, 0.0f,
-    -2.00f, 3.0f, -2.00f,         1.0f, 0.0f, 0.0f,
-    };
-
-    GLuint Indices[] =
-    {
-    0, 1, 2,
-    2, 3, 0,
+        //Top side
+        -2.00f, 3.0f, -2.00f,         0.0f, 0.0f, 0.0f,
+        2.00f, 3.0f, -2.00f,          0.0f, 0.0f, 0.0f,
+        2.00f, 3.0f, 2.00f,           0.0f, 0.0f, 0.0f,
+        2.00f, 3.0f, 2.00f,           0.0f, 0.0f, 0.0f,
+        -2.00f, 3.0f, 2.00f,          0.0f, 0.0f, 0.0f,
+        -2.00f, 3.0f, -2.00f,         0.0f, 0.0f, 0.0f,
     };
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
 
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
@@ -83,12 +78,12 @@ House::~House()
 {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
 }
 
 void House::DrawHouse()
 {
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawArrays(GL_TRIANGLES, 6, 30);
     glBindVertexArray(0);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
