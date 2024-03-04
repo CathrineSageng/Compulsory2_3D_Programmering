@@ -12,6 +12,7 @@
 #include "Trophies.h"
 #include "NPC.h"
 #include "GraphNPC.h"
+#include "House.h"
 
 using namespace std;
 
@@ -183,7 +184,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL Cube with Camera", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Game", nullptr, nullptr);
     glfwMakeContextCurrent(window);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -215,6 +216,8 @@ int main()
     graph.generateGraph();
 
     NPC NPC;
+
+    House house; 
 
     const float trophyRadius = 0.5f; // Adjust the value as needed
 
@@ -282,6 +285,9 @@ int main()
         // Update model matrix for ground, so the ground is not moving
         glm::mat4 modelGround = glm::mat4(1.0f);
 
+        // Translate the model matrix of the house to the desired position
+        glm::mat4 modelHouse = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, 0.0f, 6.0f));
+
         // Clear the color and depth buffers
         glClearColor(0.196078f, 0.196078f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -303,6 +309,10 @@ int main()
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelCharacter));
 
         character1.DrawCharacter();
+
+        // Pass transformation matrices to shader for ground
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelHouse));
+        house.DrawHouse();
 
         // Pass transformation matrices to shader for ground
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelGround));

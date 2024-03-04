@@ -138,6 +138,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GraphNPC.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="House.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="ShaderClass.cpp" />
@@ -434,6 +435,7 @@
     <ClInclude Include="dependencies\include\stb\stb_image.h" />
     <ClInclude Include="GraphNPC.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="House.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="ShaderClass.h" />
     <ClInclude Include="Trophies.h" />
