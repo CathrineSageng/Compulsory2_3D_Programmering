@@ -176,6 +176,38 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+// Check collision between character and house
+bool checkHouseCollision(glm::vec3 characterPosition) {
+    // Define the original bounding box of the house
+    glm::vec3 houseMinBounds = glm::vec3(-5.5f, 0.0f, 6.5f); // Minimum (bottom-left-front) corner of the house
+    glm::vec3 houseMaxBounds = glm::vec3(-3.0f, 3.0f, 5.0f); // Maximum (top-right-back) corner of the house
+
+    // Expand the bounding box to cover the sides and back of the house
+    float expansionX = 1.3f; // Adjust this value as needed for the X axis
+    float expansionZ = 3.1f; // Adjust this value as needed for the Z axis
+    houseMinBounds -= glm::vec3(expansionX, 0.0f, expansionZ);
+    houseMaxBounds += glm::vec3(expansionX, 0.0f, expansionZ);
+
+    // Check if the character's position is within the expanded house boundaries
+    if (characterPosition.x >= houseMinBounds.x && characterPosition.x <= houseMaxBounds.x &&
+        characterPosition.y >= houseMinBounds.y && characterPosition.y <= houseMaxBounds.y &&
+        characterPosition.z >= houseMinBounds.z && characterPosition.z <= houseMaxBounds.z) {
+        // Character's position is inside the expanded house boundaries
+        return true;
+    }
+    return false;
+}
+
+// Update character position with collision detection
+void updateCharacterPosition(glm::vec3& characterPosition, glm::vec3 newPosition)
+{
+    // Check collision with the house
+    if (!checkHouseCollision(newPosition)) {
+        // If there is no collision, update character position
+        characterPosition = newPosition;
+    }
+}
+
 int main() 
 {
     glfwInit();
@@ -275,8 +307,8 @@ int main()
         if (newPosition.z < -groundSize) newPosition.z = -groundSize;
         if (newPosition.z > groundSize) newPosition.z = groundSize;
 
-        // Update character position
-        cubePosition = newPosition;
+        // Update character position with collision detection
+        updateCharacterPosition(cubePosition, newPosition);
 
         // Update model matrix for character
         glm::mat4 modelCharacter;
