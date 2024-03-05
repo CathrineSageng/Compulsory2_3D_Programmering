@@ -14,6 +14,7 @@
 #include "GraphNPC.h"
 #include "House.h"
 #include "Door.h"
+#include "HouseObject.h"
 
 using namespace std;
 
@@ -228,6 +229,8 @@ int main()
 
     Door door;
 
+    HouseObject sphere(0.5f, 30, 30);
+
     const float trophyRadius = 0.5f; 
 
     // Define bounding spheres for trophies
@@ -297,6 +300,9 @@ int main()
         // Translate the model matrix of the house to the desired position
         glm::mat4 modelHouse = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, 0.0f, 6.0f));
 
+        // Translate the model matrix of the house to the desired position
+        glm::mat4 modelSphere = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, 0.5f, 6.0f));
+
         // Clear the color and depth buffers
         glClearColor(0.196078f, 0.196078f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -328,6 +334,10 @@ int main()
         if (drawDoor) {
             door.DrawDoor();
         }
+
+        // Pass transformation matrices to shader for ground
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelSphere));
+        sphere.DrawHouseObject();
 
         // Pass transformation matrices to shader for ground
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelGround));

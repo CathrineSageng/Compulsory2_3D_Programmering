@@ -140,6 +140,7 @@
     <ClCompile Include="GraphNPC.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="House.cpp" />
+    <ClCompile Include="HouseObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="ShaderClass.cpp" />
@@ -438,6 +439,7 @@
     <ClInclude Include="GraphNPC.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="House.h" />
+    <ClInclude Include="HouseObject.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="ShaderClass.h" />
     <ClInclude Include="Trophies.h" />
