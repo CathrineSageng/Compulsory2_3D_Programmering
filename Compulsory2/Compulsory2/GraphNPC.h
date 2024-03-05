@@ -10,18 +10,21 @@ public:
     Graph();
     ~Graph();
 
-    void generateGraph(); // Generate the graph
-    void drawGraph();     // Draw the graph
-    void renderScene();   // Render the scene
-    int getNumPoints();   // Get the number of points in the graph
-    glm::vec3 getGraphPoint(int index); // Get a point from the graph
+    void generateGraph(); 
+    void drawGraph();     
+    void renderScene(); 
+    // Get the number of points in the graph
+    int getNumPoints();   
+    // Get a point from the graph
+    glm::vec3 getGraphPoint(int index); 
 
 private:
     std::vector<glm::vec3> calculateGraphCoordinates();
 
-    GLuint VAO, VBO; // VAO and VBO for the graph
+    GLuint VAO, VBO; 
 
-    std::vector<glm::vec3> graphCoords; // Vector to store graph coordinates
+    // Vector to store graph coordinates
+    std::vector<glm::vec3> graphCoords; 
 };
 
 

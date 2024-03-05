@@ -6,7 +6,7 @@ Door::Door()
     VAO = 0;
 
     GLfloat vertices[] = {
-        //Door front
+        //Door                          //Color black
          0.663f, 0.0f, -2.00f,        0.0f, 0.0f, 0.0f,
          -0.667f, 0.0f, -2.00f,       0.0f, 0.0f, 0.0f,
          -0.667f, 1.5f, -2.00f,       0.0f, 0.0f, 0.0f,

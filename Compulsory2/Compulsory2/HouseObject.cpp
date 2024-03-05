@@ -3,7 +3,7 @@
 #endif
 
 #include "HouseObject.h"
-#include <cmath>
+
 
 HouseObject::HouseObject(float radius, int sectors, int stacks)
 {

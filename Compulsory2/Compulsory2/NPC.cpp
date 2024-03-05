@@ -9,7 +9,6 @@ NPC::NPC()
     VAO = 0;
     EBO = 0;
 
-    // Define vertices of the cube
     GLfloat vertices[] = {
         // Positions                //Colors yellow
     -0.1f, -0.1f, -0.1f,        1.0f, 1.0f, 0.0f,    

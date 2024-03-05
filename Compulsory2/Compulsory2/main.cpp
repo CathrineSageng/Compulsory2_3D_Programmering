@@ -22,6 +22,7 @@ const GLuint WIDTH = 1200, HEIGHT = 1000;
 const GLfloat cameraSpeed = 0.001f;
 //Position of the cube
 glm::vec3 cubePosition = glm::vec3(0.0f, 0.5f, 0.0f);
+//Size  of the ground. The total size is 20
 const float groundSize = 10.0f; 
 
 //The points for the trophies
@@ -31,27 +32,26 @@ vector<glm::vec3> points =
     glm::vec3(4, 0.1, 5), glm::vec3(6, 0.1, 5), glm::vec3(6, 0.1, 7), glm::vec3(8, 0.1, 4)
 };
 
-// Define bounding sphere for character
+// Bounding sphere for character
 glm::vec3 characterCenter = cubePosition;
 float characterRadius = 0.5f;
 
-// Calculate distance between two points
+// Calculates the distance between two points
 float distance(glm::vec3 p1, glm::vec3 p2) {
     return glm::length(p1 - p2);
 }
 
-// Check collision between character and trophy
+// Checks the collision between character and trophy
 bool checkCollision(glm::vec3 trophyCenter, float trophyRadius)
 {
     float dist = distance(characterCenter, trophyCenter);
     return dist <= (characterRadius + trophyRadius);
 }
 
-vector<glm::vec3> punkter = { glm::vec3(-1, 0, -1), glm::vec3(-2, 0, -8), glm::vec3(-6, 0, -3), glm::vec3(-8, 0, -1) };
-
 // Global variables to control NPC movement
 float npcSpeed = 0.1f; 
-float npcTime = 0.0f; // Timer for NPC movement
+// Timer for NPC movement
+float npcTime = 0.0f; 
 bool npcForward = true; 
 
 void updateNPCPosition(const Shader& shaderProgram, GLfloat deltaTime, Graph& graph, float& npcTime, bool& npcForward) {
@@ -91,15 +91,20 @@ void updateNPCPosition(const Shader& shaderProgram, GLfloat deltaTime, Graph& gr
 }
 
 // Camera settings
-float angle = glm::radians(20.0f); // Convert 20 degrees to radians
-float distanceFromScene = 5.0f; // Distance from the scene
-float yOffset = distanceFromScene * sin(angle); // Calculate the y offset
-float zOffset = -distanceFromScene * cos(angle); // Calculate the z offset
+// Convert 20 degrees to radians
+float angle = glm::radians(20.0f); 
+// Distance from the scene
+float distanceFromScene = 5.0f; 
+// Calculate the y offset
+float yOffset = distanceFromScene * sin(angle); 
+// Calculate the z offset
+float zOffset = -distanceFromScene * cos(angle); 
 
-glm::vec3 cameraPos = glm::vec3(0.0f, yOffset, zOffset); // Set the new camera position
-glm::vec3 cameraFront = glm::normalize(glm::vec3(0.0f, -yOffset, -zOffset)); // Adjust camera front to look at the scene
+// Set the new camera position
+glm::vec3 cameraPos = glm::vec3(0.0f, yOffset, zOffset); 
+// Adjust camera front to look at the scene
+glm::vec3 cameraFront = glm::normalize(glm::vec3(0.0f, -yOffset, -zOffset)); 
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-//glm::vec3 cameraFrontt = glm::vec3(0.0f, 0.0f, -1.0f);
 GLfloat yaw = -90.0f;
 GLfloat pitch = 0.0f;
 GLfloat lastX = WIDTH / 2.0f;
@@ -227,10 +232,13 @@ int main()
     //House
     House house; 
 
+    //Door
     Door door;
 
+    //Sphere inside hte house
     HouseObject sphere(0.5f, 30, 30);
 
+    //The radius of the trophies
     const float trophyRadius = 0.5f; 
 
     // Define bounding spheres for trophies
@@ -252,12 +260,13 @@ int main()
     {
         glfwPollEvents();
 
-        bool insideHouse = false; // Flag to indicate whether the character is inside the house
+        // Indicates character is inside the house
+        bool insideHouse = false; 
 
         GLfloat deltaTime = glfwGetTime();
         glfwSetTime(0.0f);
 
-        // Handle keyboard input for camera movement
+        // Keyboard input for camera movement
         if (keys[GLFW_KEY_UP])
             cameraPos += cameraSpeed * cameraFront;
         if (keys[GLFW_KEY_DOWN])
@@ -268,12 +277,12 @@ int main()
             cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 
 
-        // Calculate the movement direction in the horizontal plane
+        // Calculates the movement direction in the horizontal plane
         glm::vec3 movementDirection = glm::normalize(glm::vec3(cameraFront.x, 0.0f, cameraFront.z));
 
         glm::vec3 newPosition = cubePosition;
 
-        // Handle keyboard input for character movement
+        // Keyboard input for character movement
         if (keys[GLFW_KEY_W])
             newPosition += cameraSpeed * movementDirection;
         if (keys[GLFW_KEY_A])
@@ -283,7 +292,7 @@ int main()
         if (keys[GLFW_KEY_D])
             newPosition += glm::normalize(glm::cross(movementDirection, cameraUp)) * cameraSpeed;
 
-        // Check boundaries
+        // Check boundaries of the ground
         if (newPosition.x < -groundSize) newPosition.x = -groundSize;
         if (newPosition.x > groundSize) newPosition.x = groundSize;
         if (newPosition.z < -groundSize) newPosition.z = -groundSize;
@@ -299,10 +308,10 @@ int main()
         // Update model matrix for ground, so the ground is not moving
         glm::mat4 modelGround = glm::mat4(1.0f);
 
-        // Translate the model matrix of the house to the desired position
+        // Translate the model matrix of the house
         glm::mat4 modelHouse = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, 0.0f, 6.0f));
 
-        // Translate the model matrix of the house to the desired position
+        // Translate the model matrix of the sphere
         glm::mat4 modelSphere = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, 0.5f, 6.0f));
 
         // Clear the color and depth buffers
@@ -337,7 +346,7 @@ int main()
             door.DrawDoor();
         }
 
-        // Pass transformation matrices to shader for ground
+        // Pass transformation matrices to shader for sphere
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelSphere));
         sphere.DrawHouseObject();
 
@@ -364,16 +373,15 @@ int main()
             }
         }
 
-        // Check if character enters the house
+        // Check if character is inside the house
         if (checkHouseCollision(cubePosition))
         {
             insideHouse = true;
-            // Adjust camera position for inside the house
-            cameraPos = glm::vec3(-4.0f, 1.0f, 4.0f); // Adjust this position as needed
+            // Camera position inside the house
+            cameraPos = glm::vec3(-4.0f, 1.0f, 4.0f); 
         }
         else
         {
-            // Character is outside the house by default
             insideHouse = false;
         }
 

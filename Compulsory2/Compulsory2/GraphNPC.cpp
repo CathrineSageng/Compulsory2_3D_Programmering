@@ -54,7 +54,7 @@ std::vector<glm::vec3> Graph::calculateGraphCoordinates() {
 }
 
 void Graph::generateGraph() {
-    // Generate graph coordinates and VAO/VBO
+
     graphCoords = calculateGraphCoordinates();
 
     glGenVertexArrays(1, &VAO);
@@ -76,7 +76,7 @@ void Graph::drawGraph() {
     // Set line thickness
     glLineWidth(3.0f);
 
-    glDrawArrays(GL_LINE_STRIP, 0, graphCoords.size()); // Use graphCoords.size() instead of numGraphVertices
+    glDrawArrays(GL_LINE_STRIP, 0, graphCoords.size()); 
     glBindVertexArray(0);
 }
 
