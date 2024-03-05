@@ -252,6 +252,8 @@ int main()
     {
         glfwPollEvents();
 
+        bool insideHouse = false; // Flag to indicate whether the character is inside the house
+
         GLfloat deltaTime = glfwGetTime();
         glfwSetTime(0.0f);
 
@@ -360,6 +362,19 @@ int main()
             if (checkCollision(trophyCenter, trophyRadius)) {
                 trophies1.RemoveTrophy(trophyCenter);
             }
+        }
+
+        // Check if character enters the house
+        if (checkHouseCollision(cubePosition))
+        {
+            insideHouse = true;
+            // Adjust camera position for inside the house
+            cameraPos = glm::vec3(-4.0f, 1.0f, 4.0f); // Adjust this position as needed
+        }
+        else
+        {
+            // Character is outside the house by default
+            insideHouse = false;
         }
 
         // Swap the screen buffers
