@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="dependencies\include\glm\detail\glm.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GraphNPC.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -433,6 +434,7 @@
     <ClInclude Include="dependencies\include\glm\vector_relational.hpp" />
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
     <ClInclude Include="dependencies\include\stb\stb_image.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="GraphNPC.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="House.h" />

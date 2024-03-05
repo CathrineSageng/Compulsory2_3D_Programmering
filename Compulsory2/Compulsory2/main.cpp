@@ -13,6 +13,7 @@
 #include "NPC.h"
 #include "GraphNPC.h"
 #include "House.h"
+#include "Door.h"
 
 using namespace std;
 
@@ -105,6 +106,8 @@ GLfloat lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
 bool keys[1024];
 
+bool drawDoor = true;
+
 // Keyboard input callback function
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) 
 {
@@ -133,6 +136,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             cubePosition -= glm::normalize(glm::cross(movementDirection, cameraUp)) * cameraSpeed;
         else if (key == GLFW_KEY_D)
             cubePosition += glm::normalize(glm::cross(movementDirection, cameraUp)) * cameraSpeed;
+    }
+
+   //Open the door to the house 
+    if (key == GLFW_KEY_O && action == GLFW_PRESS) {
+        drawDoor = !drawDoor;
     }
 
     // Handle the movement to the NPC
@@ -217,6 +225,8 @@ int main()
 
     //House
     House house; 
+
+    Door door;
 
     const float trophyRadius = 0.5f; 
 
@@ -312,6 +322,12 @@ int main()
         // Pass transformation matrices to shader for house
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelHouse));
         house.DrawHouse();
+
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelHouse));
+
+        if (drawDoor) {
+            door.DrawDoor();
+        }
 
         // Pass transformation matrices to shader for ground
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelGround));
