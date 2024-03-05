@@ -18,8 +18,9 @@ using namespace std;
 
 const GLuint WIDTH = 1200, HEIGHT = 1000;
 const GLfloat cameraSpeed = 0.001f;
-glm::vec3 cubePosition = glm::vec3(0.0f, 0.5f, 0.0f); // Initial position of the cube
-const float groundSize = 10.0f; // Half of the ground's size in each direction
+//Position of the cube
+glm::vec3 cubePosition = glm::vec3(0.0f, 0.5f, 0.0f);
+const float groundSize = 10.0f; 
 
 //The points for the trophies
 vector<glm::vec3> points = 
@@ -30,7 +31,7 @@ vector<glm::vec3> points =
 
 // Define bounding sphere for character
 glm::vec3 characterCenter = cubePosition;
-float characterRadius = 0.5f; // Adjust as needed
+float characterRadius = 0.5f;
 
 // Calculate distance between two points
 float distance(glm::vec3 p1, glm::vec3 p2) {
@@ -47,9 +48,9 @@ bool checkCollision(glm::vec3 trophyCenter, float trophyRadius)
 vector<glm::vec3> punkter = { glm::vec3(-1, 0, -1), glm::vec3(-2, 0, -8), glm::vec3(-6, 0, -3), glm::vec3(-8, 0, -1) };
 
 // Global variables to control NPC movement
-float npcSpeed = 0.1f; // Adjust speed as needed
+float npcSpeed = 0.1f; 
 float npcTime = 0.0f; // Timer for NPC movement
-bool npcForward = true; // Flag to indicate the direction of NPC movement
+bool npcForward = true; 
 
 void updateNPCPosition(const Shader& shaderProgram, GLfloat deltaTime, Graph& graph, float& npcTime, bool& npcForward) {
     // Update NPC time and direction
@@ -104,42 +105,6 @@ GLfloat lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
 bool keys[1024];
 
-
- //Mouse movement callback function
-//void mouse_callback(GLFWwindow* window, double xpos, double ypos) 
-//{
-//    if (firstMouse)
-//    {
-//        lastX = xpos;
-//        lastY = ypos;
-//        firstMouse = false;
-//    }
-//
-//    GLfloat xoffset = xpos - lastX;
-//    GLfloat yoffset = lastY - ypos;
-//    lastX = xpos;
-//    lastY = ypos;
-//
-//    GLfloat sensitivity = 0.05f;
-//    xoffset *= sensitivity;
-//    yoffset *= sensitivity;
-//
-//    yaw += xoffset;
-//    pitch += yoffset;
-//
-//    if (pitch > 89.0f) pitch = 89.0f;
-//    if (pitch < -89.0f) pitch = -89.0f;
-//
-//    glm::vec3 front;
-//    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-//    front.y = sin(glm::radians(pitch));
-//    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-//    cameraFrontt = glm::normalize(front);
-//
-//    // Print out the mouse position for debugging
-//    std::cout << "Mouse Position: (" << xpos << ", " << ypos << ")" << std::endl;
-//}
-
 // Keyboard input callback function
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) 
 {
@@ -170,21 +135,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             cubePosition += glm::normalize(glm::cross(movementDirection, cameraUp)) * cameraSpeed;
     }
 
-    // Handle 'm' key for toggling movement direction of modelNPC
+    // Handle the movement to the NPC
     if (key == GLFW_KEY_M && action == GLFW_PRESS) {
-        npcForward = !npcForward; // Toggle the movement direction
+        npcForward = !npcForward;
     }
 }
 
 // Check collision between character and house
 bool checkHouseCollision(glm::vec3 characterPosition) {
-    // Define the original bounding box of the house
-    glm::vec3 houseMinBounds = glm::vec3(-5.5f, 0.0f, 6.5f); // Minimum (bottom-left-front) corner of the house
-    glm::vec3 houseMaxBounds = glm::vec3(-3.0f, 3.0f, 5.0f); // Maximum (top-right-back) corner of the house
+    // Define the bounding box of the house
+    glm::vec3 houseMinBounds = glm::vec3(-5.5f, 0.0f, 6.5f);
+    glm::vec3 houseMaxBounds = glm::vec3(-3.0f, 3.0f, 5.0f);
 
-    // Expand the bounding box to cover the sides and back of the house
-    float expansionX = 1.3f; // Adjust this value as needed for the X axis
-    float expansionZ = 3.1f; // Adjust this value as needed for the Z axis
+    // Expand the bounding box
+    float expansionX = 1.3f; 
+    float expansionZ = 3.1f; 
     houseMinBounds -= glm::vec3(expansionX, 0.0f, expansionZ);
     houseMaxBounds += glm::vec3(expansionX, 0.0f, expansionZ);
 
@@ -220,7 +185,6 @@ int main()
     glfwMakeContextCurrent(window);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetKeyCallback(window, key_callback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) 
@@ -244,20 +208,23 @@ int main()
     Trophies trophies1;
     trophies1.SetPoints(points);
 
+    //Creates the graph to the NPC
     Graph graph;
     graph.generateGraph();
 
+    //NPC
     NPC NPC;
 
+    //House
     House house; 
 
-    const float trophyRadius = 0.5f; // Adjust the value as needed
+    const float trophyRadius = 0.5f; 
 
-    // Define bounding spheres for trophies (assuming the trophy positions are stored in the `points` vector)
+    // Define bounding spheres for trophies
     std::vector<std::pair<glm::vec3, float>> trophyBoundingSpheres;
     for (const auto& trophy : points)
     {
-        trophyBoundingSpheres.push_back({ trophy, trophyRadius }); // Assuming trophyRadius is defined elsewhere
+        trophyBoundingSpheres.push_back({ trophy, trophyRadius }); 
     }
 
     // Enable depth testing
@@ -342,7 +309,7 @@ int main()
 
         character1.DrawCharacter();
 
-        // Pass transformation matrices to shader for ground
+        // Pass transformation matrices to shader for house
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelHouse));
         house.DrawHouse();
 

@@ -21,7 +21,8 @@ private:
     GLuint CBO;
     vector<glm::vec3> points;
     vector<glm::vec3> farger;
-    std::vector<bool> activeTrophies; // Keep track of active trophies
+    // Keep track of active trophies
+    std::vector<bool> activeTrophies; 
 };
 
 #endif

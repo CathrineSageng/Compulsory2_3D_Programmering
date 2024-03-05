@@ -48,8 +48,6 @@ void Trophies::DrawTrophies()
     glBindVertexArray(VAO);
     for (size_t i = 0; i < points.size(); ++i) {
         if (activeTrophies[i]) {
-            // Draw the trophy at points[i]
-            // Implement your drawing logic here
             glPointSize(40.0f);
             glDrawArrays(GL_POINTS, i, 1);
         }
